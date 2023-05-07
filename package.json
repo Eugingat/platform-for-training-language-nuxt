@@ -11,5 +11,9 @@
   "devDependencies": {
     "@types/node": "^18",
     "nuxt": "^3.4.2"
+  },
+  "dependencies": {
+    "firebase": "^9.21.0",
+    "jsonwebtoken": "^9.0.0"
   }
 }
