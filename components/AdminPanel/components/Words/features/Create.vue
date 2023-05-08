@@ -47,7 +47,7 @@ const clear = () => {
 
 const create = async () => {
     if (wordData.word && wordData.category) {
-      const answer = await useNewWord(wordData);
+      const answer = await useNewWord({ ...wordData, translation: wordData.translation.map(({value}) => value)});
 
       if (answer) {
         clear();
