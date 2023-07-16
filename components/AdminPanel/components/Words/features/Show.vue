@@ -5,7 +5,7 @@
             Word: {{ word }}
           </div>
         <div class="translation">
-          Translations: <span v-for="value in translation"> {{value}} </span>
+          Translations: <span v-for="({value}) in translation"> {{value}} </span>
         </div>
         <div class="category">
             Category: {{ category }}
@@ -69,5 +69,16 @@
 .btns button {
   font-size: 20px;
   padding: 8px 15px;
+  background-color: white;
+  border: 2px solid #00dc82;
+  font-weight: bold;
+  color: #00dc82;
+  transition-duration: 1s;
+}
+
+.btns button:hover {
+  border-color: red;
+  background-color: red;
+  color: white;
 }
 </style>

@@ -2,7 +2,7 @@ import {queryByCollection} from "~/server/lib/firestore";
 // @ts-ignore
 import jwt from "jsonwebtoken";
 
-interface IUsers {
+export interface IUsers {
   login: string;
   password: string;
   token: string;

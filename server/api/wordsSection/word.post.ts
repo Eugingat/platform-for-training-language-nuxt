@@ -1,4 +1,4 @@
-import {queryByCollection, set} from "~/server/lib/firestore";
+import {set} from "~/server/lib/firestore";
 
 interface INewWord {
     word: string;

@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import {useAuth} from "../../composables/useAuth";
+import {useAuth} from "~/composables/useAuth";
 
 const login = ref('');
 const password = ref('');

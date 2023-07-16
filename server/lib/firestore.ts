@@ -10,8 +10,10 @@ import {
     setDoc,
     collectionGroup,
     Timestamp,
+    updateDoc,
 } from "firebase/firestore";
 import { firestoreDb } from "./firebase";
+
 
 export const queryByCollection = async (col: string) => {
     // @ts-ignore
@@ -32,6 +34,18 @@ export const queryByCollection = async (col: string) => {
 export const set = async (col: string, document: Object) => {
     await setDoc(doc(collection(firestoreDb, col)), document, { merge: true });
 };
+
+export const updateCategories = async (col: string, document: any) => {
+    const docs = doc(firestoreDb, col, document.id);
+
+    await updateDoc(docs, {list: document.list})
+}
+
+export const updateUser= async (col: string, document: any) => {
+    const docs = doc(firestoreDb, col, document.id);
+
+    await updateDoc(docs, {token: document.token})
+}
 
 export const add = async (col: string, document: Object) => {
     // @ts-ignore

@@ -12,6 +12,8 @@
         <option disabled value=""> Please select category </option>
         <option v-for="category in categoriesForSelect"> {{category}}</option>
       </select>
+      <button type="button" class="button-category" @click="createCategory"> Create new category </button>
+      <input placeholder="Name category" v-model="nameCategory">
       <div class="btns">
         <button type="submit"> Create </button>
         <button type="button" @click="clear"> Clear </button>
@@ -20,20 +22,19 @@
 </template>
 
 <script setup>
-
-import {useCategories} from "../../../../../composables/wordsSection/useCategories";
-import {useNewWord} from "../../../../../composables/wordsSection/useNewWord";
+import {useGetCategories, useCreateCategories} from "~/composables/categories/useCategories";
+import {useNewWord} from "~/composables/wordsSection/useNewWord";
 
 const wordData = reactive({
   word: '',
   translation: [{ value: '' }],
   category: '',
 })
-
+const nameCategory = ref('');
 const categoriesForSelect = ref([]);
 
 onMounted(async () => {
-    const categories = await useCategories();
+    const categories = await useGetCategories();
 
     if (unref(categories)) categoriesForSelect.value = unref(categories)[0].list;
 })
@@ -47,7 +48,7 @@ const clear = () => {
 
 const create = async () => {
     if (wordData.word && wordData.category) {
-      const answer = await useNewWord({ ...wordData, translation: wordData.translation.map(({value}) => value)});
+      const answer = await useNewWord({ ...wordData });
 
       if (answer) {
         clear();
@@ -56,7 +57,21 @@ const create = async () => {
 };
 
 const addTranslation = () => {
-  wordData.translate.push({value: ''});
+  wordData.translation.push({value: ''});
+}
+
+const deleteTranslation = () => {
+  wordData.translation.pop();
+}
+
+const createCategory = async () => {
+  if (unref(nameCategory).trim()) {
+    const answer = await useCreateCategories(unref(nameCategory))
+
+    if (answer) {
+      categoriesForSelect.value.push(unref(nameCategory));
+    }
+  }
 }
 
 </script>
@@ -139,6 +154,22 @@ const addTranslation = () => {
   .btnsBlockTranslation button:last-child:hover {
     border-color: red;
     background-color: red;
+    color: white;
+  }
+
+  .button-category {
+    width: 300px;
+    padding: 15px;
+    background-color: white;
+    border: 2px solid #00dc82;
+    font-size: 24px;
+    font-weight: bold;
+    color: #00dc82;
+    transition-duration: 1s;
+  }
+
+  .button-category:hover {
+    background-color: #00dc82;
     color: white;
   }
 </style>

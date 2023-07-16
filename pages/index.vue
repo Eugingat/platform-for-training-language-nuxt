@@ -16,10 +16,10 @@
   <div class="modal" v-show="isModal" @click="closeModal">
     <form :class="{'form-create': true, 'size-form': isSizeForm}" @submit.prevent="register">
       <div>
-        <input id="login" type="text" v-model="newLogin" placeholder="Login">
+        <input id="login" type="text" v-model="newLogin" placeholder="Login" required>
       </div>
       <div>
-        <input id="password" type="password" v-model="newPassword" placeholder="Password">
+        <input id="password" type="password" v-model="newPassword" placeholder="Password" required>
       </div>
       <button id="registredBtn" type="submit"> Register</button>
     </form>
@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+import {useAuthUsers, useRegister} from "~/composables/useAuth";
+
 const login = ref('');
 const password = ref('');
 const newLogin = ref('');
@@ -38,8 +40,14 @@ const isSizeForm = ref(false);
 
 const router = useRouter();
 
-const register = () => {
-  console.log(222222);
+const register = async () => {
+  if (unref(newLogin).trim() && unref(newPassword).trim()) {
+    const isRegistered = await useRegister(unref(newLogin), unref(newPassword));
+
+    if (isRegistered) {
+      isModal.value = false;
+    }
+  }
 }
 
 const openModal = () => {
@@ -51,6 +59,19 @@ const closeModal = (event) => {
   const target = event.target;
 
   if (target.classList.contains('modal')) isModal.value = false;
+}
+
+const sumbit = async () => {
+  const isAuth = await useAuthUsers(login, password);
+
+  if (unref(isAuth)) {
+    const cookie = useCookie('token');
+
+    cookie.value = unref(isAuth).token;
+
+    router.push(`/user/${unref(isAuth).id}`);
+  }
+
 }
 </script>
 
@@ -183,9 +204,10 @@ hr {
 }
 
 #registredBtn {
+  font-size: 20px;
   width: 100%;
   border: none;
-  padding: 5px 0;
+  padding: 15px 10px;
   background: linear-gradient(-45deg, #1877f2, #A4C4E8F2, #1877f2, #A4C4E8F2);
   background-size: 300% 100%;
   animation-name: createBtn;
