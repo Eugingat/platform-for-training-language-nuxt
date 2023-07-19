@@ -1,4 +1,5 @@
 import {set} from "~/server/lib/firestore";
+import checkAuthUtils, {IErrorAuth} from "~/server/utils/checkAuth-utils";
 
 interface INewWord {
     word: string;
@@ -7,6 +8,12 @@ interface INewWord {
 }
 
 export default defineEventHandler(async (event) => {
+    const isAuth: IErrorAuth | boolean = await checkAuthUtils(event);
+
+    if (typeof(isAuth) !== 'boolean') {
+        throw createError(isAuth);
+    }
+
     const body: INewWord = await readBody(event);
 
     try {

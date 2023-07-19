@@ -5,6 +5,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = useCookie('token');
 
     if (!unref(token)) {
-        return navigateTo('/', { redirectCode: 403 });
+        return navigateTo('/admin?code=403', { redirectCode: 403 });
     }
 })

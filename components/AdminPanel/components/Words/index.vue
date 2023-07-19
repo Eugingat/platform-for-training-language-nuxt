@@ -6,8 +6,6 @@
   </div>
 
   <component :is="dynamicComponents[isChoosed]"></component>
-
-
 </template>
 
 <script setup>

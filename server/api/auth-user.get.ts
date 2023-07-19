@@ -22,8 +22,6 @@ export default defineEventHandler(async (event) => {
 
             await updateUser('users', user);
 
-            console.log(token);
-
             return user;
         } catch (e) {
             console.log(e);

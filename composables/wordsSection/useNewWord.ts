@@ -7,12 +7,18 @@ interface INewWord {
 }
 
 export const useNewWord = async (newWord:INewWord): Promise<boolean> => {
-    const { error } = await useFetch('/api/wordsSection/word', {
+    const router = useRouter();
+
+    const { data,error } = await useFetch('/api/wordsSection/word', {
         method: 'POST',
         body: newWord
     });
 
-    if (error.value) {
+    if (unref(error)?.statusCode === 403) {
+        await router.replace('/admin?code=403')
+    }
+
+    if (data.value) {
         return false
     }
 

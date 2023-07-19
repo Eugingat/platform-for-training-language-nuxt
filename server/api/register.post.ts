@@ -1,4 +1,4 @@
-import {add, queryByCollection, update} from "~/server/lib/firestore";
+import {add, queryByCollection} from "~/server/lib/firestore";
 import {IUsers} from "~/server/api/auth.get";
 
 interface INewUser {

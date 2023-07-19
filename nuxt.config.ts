@@ -2,9 +2,9 @@
 export default defineNuxtConfig({
     app: {
         head: {
-            style: [
-                {children: 'body { margin: 0 }'}
-            ]
+            style: [{
+                children: 'body {margin: 0}'
+            }]
         }
-    }
+    },
 })
