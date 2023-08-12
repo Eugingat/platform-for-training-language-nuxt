@@ -55,6 +55,7 @@ const checkTransition = () => {
 
   .singleBox p {
     font-size: 24px;
+    text-align: left;
   }
 
   .singleBox input {
