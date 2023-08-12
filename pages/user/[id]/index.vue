@@ -1,5 +1,7 @@
 <template>
-  <h1> User </h1>
+  <NuxtLayout name="user">
+      <UserPanel></UserPanel>
+  </NuxtLayout>
 </template>
 
 <script setup>
