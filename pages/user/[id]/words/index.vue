@@ -1,5 +1,7 @@
 <template>
-  <h1> Words </h1>
+  <NuxtLayout name="user">
+    <UserPanelComponentsWords></UserPanelComponentsWords>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">

@@ -84,4 +84,10 @@ const closeNotification = () => {
       color: white;
       transform: translate(-50%, 10%);
     }
+
+    .success {
+      background-color: #1877f2;
+      color: white;
+      transform: translate(-50%, 10%);
+    }
 </style>

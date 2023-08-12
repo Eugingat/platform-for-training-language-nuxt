@@ -1,28 +1,32 @@
 import {useFetch} from "#app";
 
-export const useGetCategories = async (): Promise<any> => {
+export const useCategories = () => {
     const router = useRouter();
+    const getCategories = async (): Promise<any> => {
+        const {data, error} = await useFetch('/api/wordsSection/categories');
 
-    const {data, error} = await useFetch('/api/wordsSection/categories');
+        if (unref(error)?.statusCode === 403) {
+            await router.replace('/admin?code=403')
+        }
 
-    if (unref(error)?.statusCode === 403) {
-        await router.replace('/admin?code=403')
+        return data;
     }
 
-    return data;
-}
+    const createCategories = async (name: string): Promise<any> => {
+        const {data,error} = await useFetch('/api/wordsSection/categories', {
+            method: 'POST',
+            body: name
+        })
 
-export const useCreateCategories = async (name: string): Promise<any> => {
-    const router = useRouter();
+        if (unref(error)?.statusCode === 403) {
+            await router.replace('/admin?code=403')
+        }
 
-    const {data,error} = await useFetch('/api/wordsSection/categories', {
-        method: 'POST',
-        body: name
-    })
-
-    if (unref(error)?.statusCode === 403) {
-        await router.replace('/admin?code=403')
+        return data;
     }
 
-    return data;
-}
+    return {
+        getCategories,
+        createCategories,
+    }
+};

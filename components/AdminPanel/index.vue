@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-  import {useSections} from "../../composables/useSection";
+  import {useSections} from "~/composables/useSection";
 
   const listFeature = ref([]);
 

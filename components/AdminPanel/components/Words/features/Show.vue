@@ -1,34 +1,42 @@
 <template>
-  <div class="main" v-for="({ word, category, translation }) in listWords">
-      <div class="wordBlock">
-          <div class="word">
-            Word: {{ word }}
-          </div>
-        <div class="translation">
-          Translations: <span v-for="({value}) in translation"> {{value}} </span>
-        </div>
-        <div class="category">
-            Category: {{ category }}
-        </div>
-        <div class="btns">
-          <button @click="deleteWord"> Delete word </button>
-        </div>
+  <div class="main" v-for="({ word, category, translation, id }) in listWords">
+    <div class="wordBlock">
+      <div class="word">
+        Word: {{ word }}
       </div>
+      <div class="translation">
+        Translations: <span v-for="({value}) in translation"> {{ value }} </span>
+      </div>
+      <div class="category">
+        Category: {{ category }}
+      </div>
+      <div class="btns">
+        <button @click="deleteWord(id)"> Delete word</button>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-    import {useGetWords} from "../../../../../composables/wordsSection/useGetWords";
+<script setup lang="ts">
+import {IWord, useWords} from "~/composables/wordsSection/useWords";
 
-    const listWords = ref([]);
+const {getWords, deleteWord: deleteWordFetch} = useWords();
 
-    onMounted(async () => {
-        const words = await useGetWords();
+const listWords = ref<IWord[]>([]);
 
-        if (words) listWords.value = unref(words);
+const deleteWord = async (id: string) => {
+  const answer = await deleteWordFetch(id);
 
-        console.log(unref(listWords))
-    })
+  if (answer) {
+    listWords.value = listWords.value.filter(word => word.id !== id);
+  }
+};
+
+onMounted(async () => {
+  const words = await getWords();
+
+  if (words) listWords.value = unref(words);
+})
 </script>
 
 <style scoped>

@@ -1,4 +1,5 @@
 <template>
+  <Notification :className="className" :text="textNotification"/>
   <div class="main">
     <header>
     </header>
@@ -10,13 +11,30 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const className = ref<string>('default');
+const textNotification = ref<string>('');
+const route = useRoute();
+const router = useRouter();
+const callNotification = (code: number) => {
+  switch (code) {
+    case 201:
+      className.value = 'success';
+      textNotification.value = 'Account registered successfully';
+      break;
+    case 403:
+      className.value = 'error';
+      textNotification.value = 'Your session has ended or the token has expired. Please sign in again';
+      break;
+  }
 
-const callAlert = () => {
-  console.log(1111111);
+  router.push(route.path);
+};
+
+if (route.query.code) {
+  callNotification(Number(route.query.code));
 }
 
-provide('alert', callAlert)
 </script>
 
 <style scoped>

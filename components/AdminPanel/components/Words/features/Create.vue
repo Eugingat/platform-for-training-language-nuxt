@@ -21,9 +21,15 @@
     </form>
 </template>
 
-<script setup>
-import {useGetCategories, useCreateCategories} from "~/composables/categories/useCategories";
-import {useNewWord} from "~/composables/wordsSection/useNewWord";
+<script setup lang="ts">
+import {useWords} from "~/composables/wordsSection/useWords";
+import {useCategories} from "~/composables/categories/useCategories";
+
+const {getCategories, createCategories} = useCategories()
+
+const {
+  createNewWord
+} = useWords();
 
 const wordData = reactive({
   word: '',
@@ -31,10 +37,10 @@ const wordData = reactive({
   category: '',
 })
 const nameCategory = ref('');
-const categoriesForSelect = ref([]);
+const categoriesForSelect = ref<string[]>([]);
 
 onMounted(async () => {
-    const categories = await useGetCategories();
+    const categories = await getCategories();
 
     if (unref(categories)) categoriesForSelect.value = unref(categories)[0].list;
 })
@@ -48,7 +54,7 @@ const clear = () => {
 
 const create = async () => {
     if (wordData.word && wordData.category) {
-      const answer = await useNewWord({ ...wordData });
+      const answer = await createNewWord({ ...wordData });
 
       if (answer) {
         clear();
@@ -66,7 +72,7 @@ const deleteTranslation = () => {
 
 const createCategory = async () => {
   if (unref(nameCategory).trim()) {
-    const answer = await useCreateCategories(unref(nameCategory))
+    const answer = await createCategories(unref(nameCategory))
 
     if (answer) {
       categoriesForSelect.value.push(unref(nameCategory));

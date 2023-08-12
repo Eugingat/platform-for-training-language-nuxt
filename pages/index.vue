@@ -1,31 +1,31 @@
 <template>
-  <form class="singInForm" @submit.prevent="sumbit">
-    <div>
-      <input id="login" type="text" v-model="login" placeholder="Login">
-    </div>
-    <div>
-      <input id="password" type="password" v-model="password" placeholder="Password">
-    </div>
-    <button id="signInBtn" type="submit"> Sing In</button>
-
-    <hr>
-
-    <button id="createNewBtn" type="button" @click="openModal"> Create new account</button>
-  </form>
-
-  <div class="modal" v-show="isModal" @click="closeModal">
-    <form :class="{'form-create': true, 'size-form': isSizeForm}" @submit.prevent="register">
+  <NuxtLayout name="user">
+    <form class="singInForm" @submit.prevent="sumbit">
       <div>
-        <input id="login" type="text" v-model="newLogin" placeholder="Login" required>
+        <input id="login" type="text" v-model="login" placeholder="Login">
       </div>
       <div>
-        <input id="password" type="password" v-model="newPassword" placeholder="Password" required>
+        <input id="password" type="password" v-model="password" placeholder="Password">
       </div>
-      <button id="registredBtn" type="submit"> Register</button>
+      <button id="signInBtn" type="submit"> Sing In</button>
+
+      <hr>
+
+      <button id="createNewBtn" type="button" @click="openModal"> Create new account</button>
     </form>
-  </div>
 
-
+    <div class="modal" v-show="isModal" @click="closeModal">
+      <form :class="{'form-create': true, 'size-form': isSizeForm}" @submit.prevent="register">
+        <div>
+          <input id="login" type="text" v-model="newLogin" placeholder="Login" required>
+        </div>
+        <div>
+          <input id="password" type="password" v-model="newPassword" placeholder="Password" required>
+        </div>
+        <button id="registredBtn" type="submit"> Register</button>
+      </form>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -48,6 +48,8 @@ const register = async () => {
       isModal.value = false;
     }
   }
+
+  router.replace('/?code=201');
 }
 
 const openModal = () => {
@@ -217,6 +219,33 @@ hr {
   cursor: pointer;
   font-weight: bold;
   color: white;
+}
+
+@media all and (max-width: 1000px) {
+  .singInForm {
+    width: calc(100% - 25px);
+  }
+}
+
+@media all and (max-width: 600px) {
+  .singInForm {
+    width: 100%;
+  }
+
+  .size-form {
+    width: calc(100% - 50px);
+  }
+
+  div input {
+    font-size: 20px;
+  }
+
+  input::placeholder {
+    padding-left: 5px;
+    font-size: 16px;
+  }
+
+
 }
 
 
