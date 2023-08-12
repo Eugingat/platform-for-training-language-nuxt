@@ -107,7 +107,8 @@ onMounted(async () => {
 
 .categoryBox select {
   width: 250px;
-  height: 30px;
+  height: 34px;
+  font-size: 24px;
 }
 
 select option {
