@@ -1,14 +1,16 @@
 <template>
-  <div class="singleBox" v-if="currentWord">
-    <p> Word: {{ currentWord.word }} </p>
-    <div>
-      <input v-model="translation" placeholder="Translation">
-      <small v-show="error"> Translation is incorrect </small>
-    </div>
-    <button @click="checkTransition"> Check</button>
-    <div :class="checkClasses"></div>
-    <div :class="checkIconBoxClasses">
-      <Icon name="ci:check-bold" size="6em" class="checkIcon"/>
+  <div v-if="listWords.length">
+    <div class="singleBox" v-for="({word, translation}) of listWords">
+      <p> Word: {{ word }} </p>
+      <div>
+        <input v-model="listTranslation[word]" placeholder="Translation">
+        <small v-show="error"> Translation is incorrect </small>
+      </div>
+      <button @click="checkTransition(word, translation)"> Check</button>
+      <div :class="lisTranslationCheckClasses[word]"></div>
+      <div :class="lisTranslationCheckIconBoxClasses[word]">
+        <Icon name="ci:check-bold" size="6em" class="checkIcon"/>
+      </div>
     </div>
   </div>
   <div v-else class="noWords">
@@ -17,44 +19,28 @@
 </template>
 
 <script setup lang="ts">
-import {IWord} from "~/composables/wordsSection/useWords";
-import {ComputedRef} from "vue";
-
 const props = defineProps(['listWords']);
-const currenIndex = ref(0);
-const translation = ref('');
+const listTranslation = reactive<{[key in string]: string}>({});
+const lisTranslationCheckClasses = reactive<{[key in string]: string[]}>({});
+const lisTranslationCheckIconBoxClasses = reactive<{[key in string]: string[]}>({});
 const error = ref(false);
-const checkClasses = ref(['check']);
-const checkIconBoxClasses = ref(['checkIconBox']);
 
-const currentWord: ComputedRef<IWord> = computed(() => {
-  if (unref(props).listWords.length) {
-    return unref(props).listWords[currenIndex.value]
-  }
-});
+if (props.listWords.length) {
+  props.listWords.forEach(({word}: {word: string}) => {
+    listTranslation[word] = '';
+    lisTranslationCheckClasses[word] = ['check'];
+    lisTranslationCheckIconBoxClasses[word] = ['checkIconBox'];
+  })
+}
 
-
-const checkTransition = () => {
-  if (currentWord.value.translation.some(({value}) => value === translation.value.trim().toLowerCase())) {
-    checkClasses.value = [...checkClasses.value, 'checkOpen'];
-    checkIconBoxClasses.value = [...checkIconBoxClasses.value, 'checkIconBoxOpen'];
-
-    setTimeout(() => {
-      checkClasses.value.pop();
-      checkIconBoxClasses.value.pop();
-    }, 1500)
-
-    setTimeout(() => {
-      currenIndex.value = Math.floor(Math.random() * props.listWords.length);
-      translation.value = '';
-      error.value = false;
-    }, 2000)
+const checkTransition = (word: string, translation: {value: string}[]) => {
+  if (translation.some(({value}) => value === listTranslation[word].trim().toLowerCase())) {
+    lisTranslationCheckClasses[word].push('checkOpen');
+    lisTranslationCheckIconBoxClasses[word].push('checkIconBoxOpen');
   } else {
     error.value = true;
   }
 }
-
-
 </script>
 
 <style scoped>

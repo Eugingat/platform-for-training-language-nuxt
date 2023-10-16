@@ -13,19 +13,21 @@
     </select>
     <UserPanelComponentsWordsSingle v-if="category" :listWords="listFilteredWords"></UserPanelComponentsWordsSingle>
   </div>
-  <div v-else-if="currentMode === 'Multiple'">
+  <div v-else-if="currentMode === 'Multiple'" class="categoryBox">
     <h1> Choose category </h1>
     <select v-model="category" required>
       <option value="all"> All </option>
       <option v-for="category in categoriesForSelect"> {{ category }}</option>
     </select>
+    <UserPanelComponentsWordsMultiple v-if="category" :listWords="listFilteredWords"></UserPanelComponentsWordsMultiple>
   </div>
-  <div v-else-if="currentMode === 'Test'">
+  <div v-else-if="currentMode === 'Test'" class="categoryBox">
     <h1> Choose category </h1>
     <select v-model="category" required>
       <option value="all"> All </option>
       <option v-for="category in categoriesForSelect"> {{ category }}</option>
     </select>
+    <UserPanelComponentsWordsTest v-if="category" :listWords="listFilteredWords"></UserPanelComponentsWordsTest>
   </div>
 </template>
 

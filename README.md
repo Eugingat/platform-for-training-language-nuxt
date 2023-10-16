@@ -1,6 +1,6 @@
-# Nuxt 3 Minimal Starter
+# Platform for training language nuxt 3
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Demo https://platform-for-training-language-nuxt-cqqsivbd3.vercel.app/
 
 ## Setup
 
@@ -12,14 +12,13 @@ yarn install
 
 # npm
 npm install
-
-# pnpm
-pnpm install
 ```
+
+Start the development server on `http://localhost:3000`
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`
+Create .env file for FIREBASE Config and SECRET_KEY for token
 
 ```bash
 npm run dev
@@ -39,4 +38,3 @@ Locally preview production build:
 npm run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

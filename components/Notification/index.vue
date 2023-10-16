@@ -17,6 +17,7 @@ interface INotificationData {
 }
 
 const props = defineProps(['className', 'text']);
+const emits = defineEmits(['close']);
 
 
 const notificationData: INotificationData = reactive({
@@ -36,11 +37,12 @@ onMounted(() => {
   setTimeout(() => {
     notificationData.classes[unref(className)] = true;
     notificationData.text = unref(text);
-  }, 0)
+  }, 100)
 })
 
 const closeNotification = () => {
   notificationData.classes[unref(className)] = false;
+  setTimeout(() => emits('close'), 1000);
 }
 
 

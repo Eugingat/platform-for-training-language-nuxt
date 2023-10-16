@@ -1,4 +1,5 @@
 <template>
+  <Notification :className="className" :text="textNotification" @close="closeNotitfication" v-if="error"/>
   <NuxtLayout name="user">
     <form class="singInForm" @submit.prevent="sumbit">
       <div>
@@ -28,15 +29,18 @@
   </NuxtLayout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useAuthUsers, useRegister} from "~/composables/useAuth";
 
+const className = ref<string>('default');
+const textNotification = ref<string>('');
 const login = ref('');
 const password = ref('');
 const newLogin = ref('');
 const newPassword = ref('');
 const isModal = ref(false);
 const isSizeForm = ref(false);
+const error = ref(false);
 
 const router = useRouter();
 
@@ -49,7 +53,9 @@ const register = async () => {
     }
   }
 
-  router.replace('/?code=201');
+  className.value = 'success';
+  textNotification.value = 'Account registered successfully';
+  error.value = true;
 }
 
 const openModal = () => {
@@ -57,14 +63,14 @@ const openModal = () => {
   isSizeForm.value = true;
 }
 
-const closeModal = (event) => {
-  const target = event.target;
+const closeModal = (event: MouseEvent) => {
+  const target = event.target as HTMLDivElement;
 
   if (target.classList.contains('modal')) isModal.value = false;
 }
 
 const sumbit = async () => {
-  const isAuth = await useAuthUsers(login, password);
+  const isAuth = await useAuthUsers(login.value, password.value);
 
   if (unref(isAuth)) {
     const cookie = useCookie('token');
@@ -72,9 +78,18 @@ const sumbit = async () => {
     cookie.value = unref(isAuth).token;
 
     router.push(`/user/${unref(isAuth).id}`);
+  } else {
+    textNotification.value = 'Incorrect login or password';
+    className.value = 'error';
+    error.value = true;
   }
 
 }
+
+const closeNotitfication = () => {
+  error.value = false;
+};
+
 </script>
 
 <style scoped>

@@ -2,6 +2,13 @@
   <Notification :className="className" :text="textNotification"/>
   <div class="main">
     <header>
+      <div @click="back">
+        <Icon name="ci:chevron-big-left" size="3em" color="white" v-if="!isRootPath"/>
+      </div>
+      <div class="themeAndLang">
+        <p>EN</p>
+        <Icon name="mdi:theme-light-dark" size="3em" color="white"/>
+      </div>
     </header>
     <div>
       <slot></slot>
@@ -31,6 +38,12 @@ const callNotification = (code: number) => {
   router.push(route.path);
 };
 
+const isRootPath = computed(() => route.path === '/');
+
+const back = () => {
+  router.back();
+}
+
 if (route.query.code) {
   callNotification(Number(route.query.code));
 }
@@ -51,8 +64,25 @@ if (route.query.code) {
 
 header,
 footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   height: 75px;
   background-color: #00dc82;
+  padding: 0 15px;
+}
+
+.themeAndLang {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.themeAndLang p {
+  font-size: 24px;
+  color: white;
 }
 
 </style>
